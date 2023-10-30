@@ -10,33 +10,23 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/board_factory.js":
-/*!******************************!*\
-  !*** ./src/board_factory.js ***!
-  \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ boardBuilder)\n/* harmony export */ });\nfunction boardBuilder (title, ...notes) {\n    const projectBoard = [...notes];\n    return {title, projectBoard};\n};\n\n//# sourceURL=webpack://todo_list/./src/board_factory.js?");
-
-/***/ }),
-
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _note_factory_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./note_factory.js */ \"./src/note_factory.js\");\n/* harmony import */ var _board_factory_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./board_factory.js */ \"./src/board_factory.js\");\n\n\n/*import userActions from \"./note_user_actions.js\";*/\n\nconst planningStep = (0,_note_factory_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(\"Plan Général / Algorithme\", \"Décrire le projet en quelques phrases très générales, puis les détailler pour donner une vue d'ensemble du problème général et des sous-problèmes à résoudre\", \n\"Dès le début, et à réévaluer/modifier si besoin\",\"Haute\", \"Premières phrases écrites il y a une semaine\");\n\nconst drawingStep = (0,_note_factory_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(\"Brouillon\", \"Dessiner une première idée de l'interface finale du projet pour en avoir une idée plus claire\", \n\"Aussi tôt que possible\",\"Haute\", \"Premiers dessins déjà produits, voir si d'autres interfaces sont nécessaires\");\nconsole.log(drawingStep);\nconsole.log(drawingStep.noteTitle);\nconsole.log(drawingStep.noteDesc);\n\n\nconst firstBoard = (0,_board_factory_js__WEBPACK_IMPORTED_MODULE_1__[\"default\"])(\"ToDoList\", planningStep, drawingStep);\n/*console.log(firstBoard);\nconsole.log(firstBoard.title)\nconsole.log(firstBoard.projectBoard);\nconsole.log(firstBoard.projectBoard[0]);*/\n\nfunction noteCreation() {\n    alert(\"Add some information to your new note\");\n    let title = prompt(\"Title:\");\n    let description = prompt(\"Description:\");\n    let priority = prompt(\"How important is it ?\");\n    let notes = prompt(\"Additionnal remarks:\");\n    const newNote = (0,_note_factory_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(title, description, priority, notes);\n    firstBoard.projectBoard.push(newNote);\n    console.log(firstBoard);\n};\nnoteCreation();\n\n/*\nfunction storeBoards() {\n    let allBoard = [];\n};\n*/\n\n//# sourceURL=webpack://todo_list/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _notes_boards_logic__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notes_boards_logic */ \"./src/notes_boards_logic.js\");\n\n/*import userActions from \"./note_user_actions.js\";*/\n\nlet firstBoard = (0,_notes_boards_logic__WEBPACK_IMPORTED_MODULE_0__.boardBuilder)(\"ToDoList\");\n\n\nconst planningStep = (0,_notes_boards_logic__WEBPACK_IMPORTED_MODULE_0__.noteBuilder)(\"Plan Général / Algorithme\", \"Décrire le projet en quelques phrases très générales, puis les détailler pour donner une vue d'ensemble du problème général et des sous-problèmes à résoudre\", \n\"Dès le début, et à réévaluer/modifier si besoin\",\"Haute\", \"Premières phrases écrites il y a une semaine\", firstBoard);\nfirstBoard.notesList.push(planningStep);\nconsole.log(firstBoard.notesList.length)\n\nconst drawingStep = (0,_notes_boards_logic__WEBPACK_IMPORTED_MODULE_0__.noteBuilder)(\"Brouillon\", \"Dessiner une première idée de l'interface finale du projet pour en avoir une idée plus claire\", \n\"Aussi tôt que possible\",\"Haute\", \"Premiers dessins déjà produits, voir si d'autres interfaces sont nécessaires\", firstBoard);\nfirstBoard.notesList.push(drawingStep);\nconsole.log(firstBoard.notesList.length);\n\nfunction noteCreation() {\n    alert(\"Add some information to your new note\");\n    let title = prompt(\"Title:\");\n    let description = prompt(\"Description:\");\n    let dueDate = \"ASAP\";\n    let priority = prompt(\"How important is it ?\");\n    let notes = prompt(\"Additionnal remarks:\");\n    const newNote = (0,_notes_boards_logic__WEBPACK_IMPORTED_MODULE_0__.noteBuilder)(title, description, dueDate, priority, notes, firstBoard);\n    firstBoard.notesList.push(newNote);\n    console.log(firstBoard);\n};\nnoteCreation();\nconsole.log(firstBoard.notesList.length);\nconsole.log(firstBoard);\n\n/*\nfunction storeBoards() {\n    let allBoard = [];\n};\n*/\n\n//# sourceURL=webpack://todo_list/./src/index.js?");
 
 /***/ }),
 
-/***/ "./src/note_factory.js":
-/*!*****************************!*\
-  !*** ./src/note_factory.js ***!
-  \*****************************/
+/***/ "./src/notes_boards_logic.js":
+/*!***********************************!*\
+  !*** ./src/notes_boards_logic.js ***!
+  \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ noteBuilder)\n/* harmony export */ });\n\n\nfunction noteBuilder (title, description, dueDate, priority, notes) {\n    const noteTitle = `Title: ${title}`;\n    const noteDesc = `Description: ${description}`;\n    return {noteTitle, noteDesc, dueDate, priority, notes};\n}\n\n//# sourceURL=webpack://todo_list/./src/note_factory.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   boardBuilder: () => (/* binding */ boardBuilder),\n/* harmony export */   noteBuilder: () => (/* binding */ noteBuilder)\n/* harmony export */ });\n\n\n\nfunction boardBuilder (title, ...notes) {\n    const notesList = [...notes];\n    return {title, notesList};\n};\n\nfunction noteBuilder (title, description, dueDate, priority, notes, parentBoard) {\n    let noteTitle = `Title: ${title}`;\n    let noteDesc = `Description: ${description}`;\n    let noteId = typeof(parentBoard.notesList)!=='undefined' ? parentBoard.notesList.length : 0;\n\n    return {noteTitle, noteDesc, dueDate, priority, notes, parentBoard, noteId};\n}\n\n\n//# sourceURL=webpack://todo_list/./src/notes_boards_logic.js?");
 
 /***/ })
 
