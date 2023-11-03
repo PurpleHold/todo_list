@@ -1,6 +1,5 @@
 import {noteBuilder as noteFactory, boardBuilder as boardFactory, allBoards, initiatefirstBoard} from "./notes_boards_logic";
 import {callActions, updateUi} from "./note_user_actions";
-/*import userActions from "./note_user_actions.js";*/
 
 /* Dumb test */
 initiatefirstBoard();
@@ -17,29 +16,3 @@ const drawingStep = noteFactory("Brouillon", "Dessiner une première idée de l'
 allBoards[0].notesList.push(drawingStep);
 console.log(allBoards[0].notesList.length);
 
-
-/*
-function noteCreation() {
-    alert("Add some information to your new note");
-    let title = prompt("Title:");
-    let description = prompt("Description:");
-    let dueDate = "ASAP";
-    let priority = prompt("How important is it ?");
-    let notes = prompt("Additionnal remarks:");
-    const newNote = noteFactory(title, description, dueDate, priority, notes, firstBoard);
-    firstBoard.notesList.push(newNote);
-    console.log(firstBoard);
-};
-noteCreation();
-console.log(firstBoard.notesList.length);
-console.log(firstBoard);
-console.log(allBoards);
-console.log(allBoards.length);
-*/
-
-
-/*
-function storeBoards() {
-    let allBoard = [];
-};
-*/

@@ -8,8 +8,8 @@ let minBoardId = 0;
 
 function boardBuilder (title, ...notes) {
     let notesList = [...notes];
-    const boardID =  allBoards.length>=minBoardId ? allBoards.length : minBoardId;
-    return {title, notesList, boardID};
+    const boardId =  allBoards.length>=minBoardId ? allBoards.length : minBoardId;
+    return {title, notesList, boardId};
 };
 
 function noteBuilder (title, description, dueDate, priority, notes, parentBoard) {
@@ -17,7 +17,7 @@ function noteBuilder (title, description, dueDate, priority, notes, parentBoard)
     let noteDesc = `Description: ${description}`;
     const noteId = parentBoard.notesList.length>=minNoteId ? parentBoard.notesList.length : minNoteId;
 
-    return {noteTitle, noteDesc, dueDate, priority, notes, parentBoard, noteId};
+    return {noteTitle, noteDesc, title, description, dueDate, priority, notes, parentBoard, noteId};
 };
 
 function initiatefirstBoard() {
@@ -28,12 +28,11 @@ function initiatefirstBoard() {
 }
 
 let changeData = {
-    addNote() {
+    addNote(parentId) {
         const newNoteData = getInputData.noteCreation();
-        const newNote = noteBuilder(newNoteData.title, newNoteData.description, newNoteData.dueDate, newNoteData.priority, newNoteData.notes, allBoards[0]);
-        allBoards[0].notesList.push(newNote);
+        const newNote = noteBuilder(newNoteData.title, newNoteData.description, newNoteData.dueDate, newNoteData.priority, newNoteData.notes, allBoards[parentId]);
+        allBoards[parentId].notesList.push(newNote);
         minNoteId = ++minNoteId;
-        console.log(allBoards[0]);
     },
     deleteNote() {
 
