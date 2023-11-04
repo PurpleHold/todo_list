@@ -12,7 +12,6 @@ input,
 select,
 progress,
 meter {
-  display: block;
   font-family: inherit;
   font-size: 100%;
   border: none;
@@ -59,6 +58,8 @@ h2.board-title {
     text-align: left;
     cursor: pointer;
     transition: all 0.2s;
+    overflow: auto;
+    overflow-wrap: break-word;
 }
 .card:hover {
     background: #5656ff;
@@ -67,4 +68,27 @@ h2.board-title {
 .card-title {
     font-weight: 900;
     font-size: 1.2rem;
+}
+
+
+.note-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background-color: rgb(9 3 15 / 70%);
+    padding: 5rem 2.5rem;
+    overflow: auto;
+}
+
+.note-modal.open {
+    display: block;
+}
+.note-modal-body {
+    padding: 3rem 1.5rem;
+    background: #fff;
+    border-radius: 15px;
+}
+body.note-modal-open {
+    overflow: hidden;
 }
