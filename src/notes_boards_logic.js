@@ -49,8 +49,10 @@ let changeData = {
         minBoardId = ++minBoardId;
         console.log(allBoards);
     },
-    removeBoard() {
-
+    removeBoard(boardId) {
+        const boardIndex = findIndexedData.boardIndex(boardId);
+        allBoards.splice(boardIndex, 1);
+        console.log(allBoards);
     },
 };
 

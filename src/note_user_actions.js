@@ -4,9 +4,19 @@ export {callActions, updateUi, getInputData};
 const boardsContainer = document.querySelector(".boards-container");
 
 function callActions() {
-    /*const noteCreationBtn = document.querySelector('.note-creation');*/
     const boardCreationBtn = document.querySelector('.board-creation');
+    boardCreationBtn.addEventListener("click", (e) => {
+        alert("Add some information to your new board");
+        changeData.addBoard();
+        updateUi.showBoard();
+    });
 
+    const boardDeletionBtn = document.querySelector('.board-deletion');
+    boardDeletionBtn.addEventListener("click", (e) => {
+        updateUi.showModal('board-deletion');
+    });
+
+    /* Event delegation for dynamically created contents */
     boardsContainer.addEventListener("click", (e) => {
         if (e.target.classList.contains('note-creation')) {
             alert("Add some information to your new note");
@@ -14,47 +24,40 @@ function callActions() {
             let boardIndex = findIndexedData.boardIndex(boardId);
             changeData.addNote(boardIndex);
             updateUi.showNote(boardId, boardIndex);
-            /*
-            let boardIndex = findIndexedData.boardIndex(boardId);
-            console.log(boardIndex);
-            console.log((allBoards[boardIndex].notesList));
-            console.log((allBoards[boardIndex].notesList).slice(-1)); */
         }
         else if (e.target.classList.contains('modal')) {
-            let noteId = e.target.getAttribute("data-note-id");
-            /*console.log(id);*/
-            updateUi.showModal(noteId);
-            /*console.log("modal");
-            console.log(e.target);
-            console.log(e.target.id);*/
+
+            if ((e.target.getAttribute("data-note-id")) != null || (e.target.parentElement.getAttribute("data-note-id")) != null) {
+                let noteId = (e.target.getAttribute("data-note-id")) == null ? (e.target.parentElement.getAttribute("data-note-id")) 
+                    : (e.target.getAttribute("data-note-id"));
+                updateUi.showModal(noteId);
+            }
+            /*
+            let noteId = (e.target.getAttribute("data-note-id")) == null ? (e.target.parentElement.getAttribute("data-note-id")) 
+                : (e.target.getAttribute("data-note-id"));
+            updateUi.showModal(noteId);*/
         }
-        else if (e.target.parentElement.classList.contains('modal')) {
-            let noteId = e.target.parentElement.getAttribute("data-note-id");
-            /*console.log(id);*/
-            updateUi.showModal(noteId);
-            /*console.log("modal");
-            console.log(e.target.parentElement);
-            console.log(e.target.parentElement.id); */
-        }
-        else if (e.target.classList.contains('delete')) {
-            console.log (e.target);
-            console.log(e.target.parentElement);
+        else if (e.target.classList.contains('delete-note')) {
             let noteId = e.target.parentElement.getAttribute("data-note-id");
             let parentId = e.target.parentElement.getAttribute("data-parent-id");
             updateUi.removeNote(parentId, noteId);
             changeData.deleteNote(parentId, noteId);
         }
+        else if (e.target.classList.contains('delete-board')) {
+            let boardId = "";
+        }
     });
 
-    boardCreationBtn.addEventListener("click", (e) => {
-        alert("Add some information to your new board");
-        changeData.addBoard();
-        updateUi.showBoard();
+    window.addEventListener('load', () => {
+        // close modals on close button (.close) or background click (parent div, .open)
+        document.addEventListener('click', event => {
+            console.log(event.target);
+            console.log(event.target.parentElement);
+            if (event.target.classList.contains('close')||event.target.classList.contains('open')) {
+                updateUi.hideModal();
+            }
+        });
     });
-
-    /*deleteBtn.addEventListener('click', (e) =>{
-        console.log(e.target.parentElement)
-    });*/
 }
 
 let getInputData = {
@@ -78,14 +81,15 @@ let updateUi = {
         /*console.log(currentBoard);*/
         const noteData = findIndexedData.newNote(boardIndex)[0];
 
-        const cardMinContents = `<button class="card modal" data-note-id="${noteData.noteId}"><div class="card-title">${noteData.title}</div>
-        <p class="due-date">${noteData.dueDate}</p></button>`;
+        const cardMinContents = `<button class="card modal" data-note-id="${noteData.noteId}">
+        <h3 class="card-title modal">${noteData.title}</h3>
+        <p class="due-date modal">${noteData.dueDate}</p></button>`;
         currentBoard.insertAdjacentHTML("beforeend", cardMinContents);
         
         const modalStart = `<div id="${noteData.noteId}" class="note-modal"> 
         <div class="note-modal-body" data-note-id="${noteData.noteId}" data-parent-id="${boardId}">`;
         const noteModalTitle = `<h1>${noteData.title}</h1>`;
-        const modalOptions = `<button class="delete">Delete Note</button>`;
+        const modalOptions = `<button class="delete-note">Delete Note</button>`;
         const noteModalData = 
             `<p class="due-date">${noteData.dueDate}</p>
             <p class="priority">${noteData.priority}</p>
@@ -113,15 +117,16 @@ let updateUi = {
         <button class="note-creation">Add Note</button></div>`;
         boardsContainer.insertAdjacentHTML("beforeend", boardContents);
     },
-    removeBoard() {
-
+    removeBoard(boardId) {
+        let board = document.querySelector(`[data-board-id="${boardId}"]`);
+        board.remove();
     },
-    showModal(noteId) {
-        document.getElementById(noteId).classList.add('open');
+    showModal(id) {
+        document.getElementById(id).classList.add('open');
         document.body.classList.add('note-modal-open');
     },
     hideModal() {
-        document.querySelector('.note-modal.open').classList.remove('open');
+        document.querySelector('.open').classList.remove('open');
         document.body.classList.remove('note-modal-open');
     },
 }

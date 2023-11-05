@@ -23,9 +23,29 @@ meter {
 .header {
     padding: 1rem 2rem;
     background-color: #5656ff;
+    display: flex;
+    justify-content: space-between;
+}
+.btn-container {
+    display: flex;
+    gap: 1rem;
 }
 h1.header {
     font-size: 2.5rem;
+}
+.header button {
+    text-align: right;
+    max-width: fit-content;
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    background: none;
+    border: 2px solid #fff;
+    color: #fff;
+}
+.header button:hover {
+    background: #fff;
+    color: black;
+    cursor: pointer;
 }
 
 .boards-container {
@@ -70,8 +90,8 @@ h2.board-title {
     font-size: 1.2rem;
 }
 
-
-.note-modal {
+/* Note Modals */
+.note-modal, .def-modal{
     display: none;
     position: fixed;
     inset: 0;
@@ -81,14 +101,18 @@ h2.board-title {
     overflow: auto;
 }
 
-.note-modal.open {
+.note-modal.open, .def-modal.open {
     display: block;
 }
-.note-modal-body {
+.note-modal-body, .def-modal-body {
     padding: 3rem 1.5rem;
     background: #fff;
     border-radius: 15px;
 }
-body.note-modal-open {
+body.note-modal-open, body.def-modal-open {
     overflow: hidden;
 }
+
+/* Creation / Deletion modals */
+
+/* .note-modal --> .content-modal*/ 
