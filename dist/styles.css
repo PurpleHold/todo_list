@@ -19,6 +19,13 @@ meter {
   box-sizing: border-box;
   width: 100%;
 }
+select {
+    padding: 0.75rem 1rem;
+    margin: 1rem 0rem;
+}
+button {
+    transition: all 0.2s;
+}
 
 .header {
     padding: 1rem 2rem;
@@ -114,5 +121,24 @@ body.note-modal-open, body.def-modal-open {
 }
 
 /* Creation / Deletion modals */
+#board-deletion .close  {
+    color: #5656ff;
+    border: 2px solid #5656ff;
+}
+button.confirm-del {
+    color: #990935;
+    border: 2px solid #990935;
+    margin-right: 0.5rem;
+}
+#board-deletion .close:hover  {
+    color: #fff;
+    background: #5656ff;
+}
+button.confirm-del:hover {
+    color: #fff;
+    background: #990935;
+}
+
+
 
 /* .note-modal --> .content-modal*/ 

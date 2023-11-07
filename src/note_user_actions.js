@@ -9,14 +9,30 @@ function callActions() {
         alert("Add some information to your new board");
         changeData.addBoard();
         updateUi.showBoard();
+        updateUi.showBoardList();
     });
 
     const boardDeletionBtn = document.querySelector('.board-deletion');
     boardDeletionBtn.addEventListener("click", (e) => {
         updateUi.showModal('board-deletion');
+        updateUi.showBoardList();
     });
 
-    /* Event delegation for dynamically created contents */
+    updateUi.showBoardList();
+
+/* Event delegation for dynamically created contents: header-specific events, then board-container events */
+
+    const header = document.querySelector('.header');
+    header.addEventListener("click", (e) => { 
+        if (e.target.classList.contains('confirm-del')) {
+            let selectElement = document.getElementById("board-select");
+            let selectedId = selectElement.selectedOptions[0].getAttribute("data-board-id");
+            updateUi.removeBoard(selectedId);
+            changeData.removeBoard(selectedId);
+            updateUi.showBoardList();
+        }
+    });
+
     boardsContainer.addEventListener("click", (e) => {
         if (e.target.classList.contains('note-creation')) {
             alert("Add some information to your new note");
@@ -32,27 +48,18 @@ function callActions() {
                     : (e.target.getAttribute("data-note-id"));
                 updateUi.showModal(noteId);
             }
-            /*
-            let noteId = (e.target.getAttribute("data-note-id")) == null ? (e.target.parentElement.getAttribute("data-note-id")) 
-                : (e.target.getAttribute("data-note-id"));
-            updateUi.showModal(noteId);*/
         }
         else if (e.target.classList.contains('delete-note')) {
             let noteId = e.target.parentElement.getAttribute("data-note-id");
             let parentId = e.target.parentElement.getAttribute("data-parent-id");
             updateUi.removeNote(parentId, noteId);
             changeData.deleteNote(parentId, noteId);
-        }
-        else if (e.target.classList.contains('delete-board')) {
-            let boardId = "";
-        }
+        } 
     });
 
     window.addEventListener('load', () => {
         // close modals on close button (.close) or background click (parent div, .open)
         document.addEventListener('click', event => {
-            console.log(event.target);
-            console.log(event.target.parentElement);
             if (event.target.classList.contains('close')||event.target.classList.contains('open')) {
                 updateUi.hideModal();
             }
@@ -103,10 +110,6 @@ let updateUi = {
     removeNote(parentId, noteId) {
         let noteCard = document.querySelector(`[data-note-id="${noteId}"]`);
         let noteModal = document.getElementById(noteId);
-
-        /*
-        console.log(noteCard);
-        console.log(noteModal); */
         noteCard.remove();
         noteModal.remove();
 
@@ -117,8 +120,17 @@ let updateUi = {
         <button class="note-creation">Add Note</button></div>`;
         boardsContainer.insertAdjacentHTML("beforeend", boardContents);
     },
+    showBoardList() {
+        let boardList = document.querySelector('.sel-board');
+        boardList.innerHTML = "";
+        allBoards.forEach(board => {
+            let boardOption = `<option value="${board.title}" data-board-id="${board.boardId}"> ${board.title} </option>`;
+            boardList.insertAdjacentHTML("beforeend", boardOption);
+        });
+    },
     removeBoard(boardId) {
-        let board = document.querySelector(`[data-board-id="${boardId}"]`);
+        let board = document.querySelector(`div[data-board-id="${boardId}"]`);
+        console.log(board);
         board.remove();
     },
     showModal(id) {
