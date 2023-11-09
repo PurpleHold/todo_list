@@ -1,9 +1,10 @@
 import {noteBuilder as noteFactory, boardBuilder as boardFactory, allBoards, initiatefirstBoard} from "./notes_boards_logic";
 import {callActions, updateUi} from "./note_user_actions";
-import { handleStorage } from "./local_storage";
+import {handleStorage, initiateFirstLoad} from "./local_storage";
 
 /* Add first board, launch actions depending on event listeners */
-initiatefirstBoard();
+//initiatefirstBoard();
+handleStorage.setStoredData();
 callActions();
 
 /* Old Notes Test

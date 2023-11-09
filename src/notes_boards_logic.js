@@ -1,7 +1,7 @@
 import {format, compareAsc} from '../node_modules/date-fns';
-import {handleStorage} from "./local_storage";
+import {handleStorage, initiateFirstLoad} from "./local_storage";
 import {getInputData, updateUi} from "./note_user_actions";
-export {noteBuilder, boardBuilder, allBoards, changeData, initiatefirstBoard, findIndexedData};
+export {noteBuilder, boardBuilder, allBoards, changeData, findIndexedData, minNoteId, minBoardId};
 
 let allBoards = [];
 /* min ID values for boards & notes, incremented when they are created
@@ -21,12 +21,6 @@ function noteBuilder (title, description, dueDate, priority, notes) {
     return {title, description, dueDate, priority, notes, noteId};
 };
 
-function initiatefirstBoard() {
-    let firstBoard = boardBuilder("ToDoList");
-    allBoards.push(firstBoard);
-    console.log(allBoards[0]);
-    updateUi.showBoard();
-}
 
 let changeData = {
     addNote(parentId) {
@@ -35,13 +29,13 @@ let changeData = {
         //const newNote = noteBuilder(newNoteData.title, newNoteData.description, newNoteData.dueDate, newNoteData.priority, newNoteData.notes, allBoards[parentId]);
         allBoards[parentId].notesList.push(newNote);
         minNoteId = ++minNoteId;
-        handleStorage.getNewData();
+        handleStorage.getNewData("add");
         console.log(allBoards);
     },
     deleteNote(parentId, noteId) {
         const noteIndex = findIndexedData.noteIndex(parentId, noteId);
         allBoards[parentId].notesList.splice(noteIndex, 1);
-        handleStorage.getNewData();
+        handleStorage.getNewData("delete");
         console.log(allBoards);
     },
     addBoard() {
@@ -49,14 +43,19 @@ let changeData = {
         const newBoard = boardBuilder(newBoardData.title);
         allBoards.push(newBoard);
         minBoardId = ++minBoardId;
-        handleStorage.getNewData();
+        handleStorage.getNewData("add");
         console.log(allBoards);
     },
     removeBoard(boardId) {
         const boardIndex = findIndexedData.boardIndex(boardId);
         allBoards.splice(boardIndex, 1);
-        handleStorage.getNewData();
+        handleStorage.getNewData("delete");
         console.log(allBoards);
+    },
+    getSavedData(savedBoards, savedBoardIdCount, savedNoteIdCount) {
+        allBoards = savedBoards;
+        minBoardId = savedBoardIdCount;
+        minNoteId = savedNoteIdCount;
     },
 };
 
