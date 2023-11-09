@@ -1,4 +1,5 @@
 import {format, compareAsc} from '../node_modules/date-fns';
+import {handleStorage} from "./local_storage";
 import {getInputData, updateUi} from "./note_user_actions";
 export {noteBuilder, boardBuilder, allBoards, changeData, initiatefirstBoard, findIndexedData};
 
@@ -14,12 +15,10 @@ function boardBuilder (title, ...notes) {
     return {title, notesList, boardId};
 };
 
-function noteBuilder (title, description, dueDate, priority, notes, parentBoard) {
-    let noteTitle = `Title: ${title}`;
-    let noteDesc = `Description: ${description}`;
-    const noteId = parentBoard.notesList.length>=minNoteId ? parentBoard.notesList.length : minNoteId;
+function noteBuilder (title, description, dueDate, priority, notes) {
+    const noteId = minNoteId;
 
-    return {noteTitle, noteDesc, title, description, dueDate, priority, notes, parentBoard, noteId};
+    return {title, description, dueDate, priority, notes, noteId};
 };
 
 function initiatefirstBoard() {
@@ -32,14 +31,17 @@ function initiatefirstBoard() {
 let changeData = {
     addNote(parentId) {
         const newNoteData = getInputData.noteCreation();
-        const newNote = noteBuilder(newNoteData.title, newNoteData.description, newNoteData.dueDate, newNoteData.priority, newNoteData.notes, allBoards[parentId]);
+        const newNote = noteBuilder(newNoteData.title, newNoteData.description, newNoteData.dueDate, newNoteData.priority, newNoteData.notes);
+        //const newNote = noteBuilder(newNoteData.title, newNoteData.description, newNoteData.dueDate, newNoteData.priority, newNoteData.notes, allBoards[parentId]);
         allBoards[parentId].notesList.push(newNote);
         minNoteId = ++minNoteId;
+        handleStorage.getNewData();
         console.log(allBoards);
     },
     deleteNote(parentId, noteId) {
         const noteIndex = findIndexedData.noteIndex(parentId, noteId);
         allBoards[parentId].notesList.splice(noteIndex, 1);
+        handleStorage.getNewData();
         console.log(allBoards);
     },
     addBoard() {
@@ -47,11 +49,13 @@ let changeData = {
         const newBoard = boardBuilder(newBoardData.title);
         allBoards.push(newBoard);
         minBoardId = ++minBoardId;
+        handleStorage.getNewData();
         console.log(allBoards);
     },
     removeBoard(boardId) {
         const boardIndex = findIndexedData.boardIndex(boardId);
         allBoards.splice(boardIndex, 1);
+        handleStorage.getNewData();
         console.log(allBoards);
     },
 };

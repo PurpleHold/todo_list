@@ -1,4 +1,5 @@
 import {noteBuilder as noteFactory, boardBuilder as boardFactory, changeData, allBoards, findIndexedData} from "./notes_boards_logic";
+import { handleStorage } from "./local_storage";
 export {callActions, updateUi, getInputData};
 
 const boardsContainer = document.querySelector(".boards-container");
@@ -23,6 +24,7 @@ function callActions() {
 /* Event delegation for dynamically created contents: header-specific events, then board-container events */
 
     const header = document.querySelector('.header');
+    /* Board deletion */
     header.addEventListener("click", (e) => { 
         if (e.target.classList.contains('confirm-del')) {
             let selectElement = document.getElementById("board-select");
@@ -52,7 +54,7 @@ function callActions() {
         else if (e.target.classList.contains('delete-note')) {
             let noteId = e.target.parentElement.getAttribute("data-note-id");
             let parentId = e.target.parentElement.getAttribute("data-parent-id");
-            updateUi.removeNote(parentId, noteId);
+            updateUi.removeNote(noteId);
             changeData.deleteNote(parentId, noteId);
         } 
     });
@@ -107,7 +109,7 @@ let updateUi = {
         const fullModalContents = modalStart+noteModalTitle+modalOptions+noteModalData+closeBtn+modalEnd;
         currentBoard.insertAdjacentHTML("beforeend", fullModalContents);
     },
-    removeNote(parentId, noteId) {
+    removeNote(noteId) {
         let noteCard = document.querySelector(`[data-note-id="${noteId}"]`);
         let noteModal = document.getElementById(noteId);
         noteCard.remove();
